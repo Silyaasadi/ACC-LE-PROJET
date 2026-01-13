@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TreeLab — Construction</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg,#020617,#0f172a);
+      color: white;
+    }
+
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px;
+    }
+
+    .title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      margin-bottom: 16px;
+    }
+
+    .title h2{
+      margin:0;
+      font-size: 26px;
+    }
+
+    .badge{
+      background: rgba(56,189,248,0.18);
+      border: 1px solid rgba(56,189,248,0.5);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      color: #d6f3ff;
+      white-space: nowrap;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+    }
+
+    .card{
+      background: rgba(2,6,23,0.85);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.45);
+    }
+
+    .card h3{
+      margin: 0 0 12px 0;
+      color: #38bdf8;
+      font-size: 18px;
+    }
+
+    .muted{
+      opacity: .85;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+
+    .muted-center{ text-align:center; }
+
+    label{
+      display:block;
+      margin: 12px 0 6px;
+      font-size: 14px;
+      opacity: .95;
+    }
+
+    input[type="text"], input[type="number"], input:not([type]){
+      width: 100%;
+      box-sizing: border-box;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: white;
+      outline: none;
+    }
+
+    input:focus{
+      border-color: rgba(56,189,248,0.85);
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.15);
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .row-top{ margin-top:10px; }
+
+    .btn{
+      margin-top: 14px;
+      background: #38bdf8;
+      color: #000;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight: bold;
+      cursor:pointer;
+      transition: .2s;
+    }
+
+    .btn:hover{ transform: scale(1.02); background:#fff; }
+
+    /* Preview graph */
+    .preview{
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      align-items:center;
+      padding: 8px 0 4px;
+    }
+
+    .node{
+      display:inline-flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      min-width: 140px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(56,189,248,0.55);
+      background: rgba(56,189,248,0.10);
+      box-shadow: 0 0 18px rgba(56,189,248,0.12);
+      font-weight: 700;
+      text-align:center;
+    }
+
+    .node small{
+      display:block;
+      font-weight: 400;
+      opacity: .8;
+      margin-top: 4px;
+    }
+
+    .edges{
+      width: 100%;
+      display:flex;
+      justify-content:space-between;
+      gap: 16px;
+      position: relative;
+      padding-top: 4px;
+      margin-top: 8px;
+    }
+
+    .edge-col{
+      width: 50%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 8px;
+      position:relative;
+    }
+
+    .edge-label{
+      font-size: 12px;
+      opacity: .9;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .child-slot{
+      width: 100%;
+      display:flex;
+      justify-content:center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
+    .child-node{
+      min-width: 120px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px dashed rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.05);
+      text-align:center;
+      opacity: .9;
+    }
+
+    /* “Arcs” using pseudo-lines */
+    .edges:before, .edges:after{
+      content:"";
+      position:absolute;
+      top:-10px;
+      width: 48%;
+      height: 28px;
+      border-top: 2px solid rgba(255,255,255,0.18);
+    }
+    .edges:before{
+      left: 2%;
+      border-left: 2px solid rgba(255,255,255,0.18);
+      border-top-left-radius: 16px;
+    }
+    .edges:after{
+      right: 2%;
+      border-right: 2px solid rgba(255,255,255,0.18);
+      border-top-right-radius: 16px;
+    }
+
+    .hint{
+      font-size: 12px;
+      opacity: .85;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+      .node{ min-width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <div class="title">
+      <h2>Construction guidée de l’arbre</h2>
+      <div class="badge">
+        {% if node %}Nœud courant : {{ node.value }}{% else %}Démarrage d’un nouvel arbre{% endif %}
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Form card -->
+      <div class="card">
+        {% if not node %}
+          <h3>1) Initialiser l’arbre</h3>
+
+          <form method="post">
+            <input type="hidden" name="start" value="1">
+
+            <label for="name">Nom de l’arbre</label>
+            <input id="name" name="name" required aria-label="Nom de l’arbre">
+
+            <div class="row">
+              <div>
+                <label for="n">Degré n (max 4)</label>
+                <input id="n" type="number" name="n" min="1" max="4" required aria-label="Degré n">
+              </div>
+              <div>
+                <label for="root">Valeur de la racine</label>
+                <input id="root" name="root" required aria-label="Valeur de la racine">
+              </div>
+            </div>
+
+            <button class="btn" type="submit">Commencer</button>
+            <div class="muted">
+              L’arbre sera construit en largeur (BFS) : on complète les fils de chaque nœud,
+              puis on passe au nœud suivant.
+            </div>
+          </form>
+
+        {% else %}
+          <h3>2) Ajouter les fils du nœud courant</h3>
+
+          <form method="post">
+            <!-- champ caché sans conflit avec k -->
+            <input type="hidden" name="step" value="children">
+
+            <label for="kInput">Combien de fils pour <strong>{{ node.value }}</strong> ? (0 → aucun)</label>
+            <input id="kInput" type="number" name="k" min="0" max="{{ n }}" required aria-label="Nombre de fils">
+
+            <div class="hint">
+              Astuce : pour un arbre binaire, utilise surtout :
+              <strong>Fils 1 = gauche</strong>, <strong>Fils 2 = droite</strong>.
+            </div>
+
+            <div class="row row-top">
+              {% for i in range(n) %}
+                {% set cid = "child" ~ i %}
+                <div>
+                  <label for="{{ cid }}">
+                    {% if i == 0 %}
+                      Fils 1 (Gauche)
+                    {% elif i == 1 %}
+                      Fils 2 (Droite)
+                    {% else %}
+                      Fils {{ i+1 }}
+                    {% endif %}
+                  </label>
+                  <input id="{{ cid }}" name="child{{ i }}" placeholder="(laisser vide si pas utilisé)"
+                         aria-label="Valeur du fils {{ i+1 }}">
+                </div>
+              {% endfor %}
+            </div>
+
+            <button class="btn" type="submit">Valider</button>
+            <div class="muted">
+              Le système ajoute les enfants et passe automatiquement au prochain nœud dans la file.
+              Quand la construction est terminée, tu seras redirigé vers le menu.
+            </div>
+          </form>
+        {% endif %}
+      </div>
+
+      <!-- Preview card -->
+      <div class="card">
+        <h3>Aperçu (nœuds & arcs)</h3>
+
+        {% if not node %}
+          <div class="muted">
+            Démarre en créant la racine. Ensuite, tu verras ici un aperçu du nœud courant
+            et des positions gauche/droite.
+          </div>
+        {% else %}
+          <div class="preview">
+            <div class="node">
+              {{ node.value }}
+              <small>nœud courant</small>
+            </div>
+
+            <div class="edges">
+              <div class="edge-col">
+                <div class="edge-label">Arc vers gauche (Fils 1)</div>
+                <div class="child-slot">
+                  <div class="child-node">Gauche</div>
+                </div>
+              </div>
+
+              <div class="edge-col">
+                <div class="edge-label">Arc vers droite (Fils 2)</div>
+                <div class="child-slot">
+                  <div class="child-node">Droite</div>
+                </div>
+              </div>
+            </div>
+
+            {% if n > 2 %}
+              <div class="muted muted-center">
+                Ton arbre est n-aire (n={{ n }}). Les fils 3..n sont des positions supplémentaires.
+                (Ils n’ont pas “gauche/droite”, mais restent des enfants du même nœud.)
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

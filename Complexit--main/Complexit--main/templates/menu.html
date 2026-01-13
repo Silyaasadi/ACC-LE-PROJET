@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeLab Menu</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<style>
+body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#020617,#0f172a);
+    color:white;
+}
+
+h1{text-align:center;margin:30px;}
+
+.grid{
+    width:80%;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+}
+
+.card{
+    background:#020617;
+    border-radius:25px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 0 20px #000;
+    transition:.3s;
+    text-decoration:none;
+    color:white;
+}
+
+.card:hover{
+    transform:translateY(-8px) scale(1.03);
+    background:#38bdf8;
+    color:black;
+}
+.card span{font-size:30px;}
+</style>
+</head>
+
+<body>
+
+<h1>🌳 TreeLab — Menu principal</h1>
+
+<div class="grid">
+<a class="card" href="/build"><span>🌱</span><br>Construire l’arbre</a>
+<a class="card" href="/show"><span>👁</span><br>Afficher l’arbre</a>
+<a class="card" href="#"><span>📏</span><br>Hauteur</a>
+<a class="card" href="#"><span>🔍</span><br>Rechercher</a>
+<a class="card" href="#"><span>➕</span><br>Insérer</a>
+<a class="card" href="#"><span>✏</span><br>Modifier</a>
+<a class="card" href="#"><span>🗑</span><br>Supprimer</a>
+<a class="card" href="#"><span>🌿</span><br>Sous-arbre</a>
+<a class="card" href="#"><span>✔</span><br>Arbre complet ?</a>
+<a class="card" href="#"><span>🔁</span><br>Transformer binaire</a>
+</div>
+
+</body>
+</html>

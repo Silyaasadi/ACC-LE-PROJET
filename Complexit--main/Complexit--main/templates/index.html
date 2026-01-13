@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TreeLab</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial;
+    background: url("/static/bg.jpg") no-repeat center center fixed;
+    background-size: cover;
+    color:white;
+}
+
+.main{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.box{
+    width:80%;
+    max-width:1100px;
+    padding:45px;
+    border-radius:30px;
+    display:flex;
+    justify-content:space-between;
+    gap:30px;
+    background: rgba(2,6,23,0.85);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    box-shadow:0 0 40px black;
+}
+
+.left{ width:65%; }
+
+.title-box{
+    border:2px solid rgba(255,255,255,0.6);
+    padding:18px 25px;
+    border-radius:12px;
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.title-box h1{
+    margin:0;
+    font-size:34px;
+    font-weight:bold;
+    color:white;
+}
+
+.subtitle{
+    margin-top:25px;
+    font-size:18px;
+    line-height:1.8;
+}
+
+.subtitle strong{ color:#38bdf8; }
+
+.members{ margin-top:30px; }
+
+.members h3{
+    margin-bottom:10px;
+    color:#38bdf8;
+    font-size:20px;
+}
+
+.members-row{
+    display:flex;
+    gap:60px;
+    font-size:18px;
+    margin-top:10px;
+    flex-wrap:wrap;
+}
+
+.desc{
+    margin-top:30px;
+    font-size:17px;
+    line-height:1.7;
+    opacity:0.95;
+}
+
+.right{
+    width:35%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.btn{
+    background:#38bdf8;
+    color:black;
+    padding:18px 45px;
+    border-radius:30px;
+    text-decoration:none;
+    font-size:20px;
+    font-weight:bold;
+    transition:.3s;
+    text-align:center;
+}
+
+.btn:hover{
+    background:white;
+    transform:scale(1.05);
+}
+
+@media (max-width: 900px){
+    .box{ flex-direction:column; width:95%; padding:30px; }
+    .left, .right{ width:100%; }
+    .right{ justify-content:flex-start; }
+}
+</style>
+</head>
+
+<body>
+<div class="main">
+    <div class="box">
+
+        <div class="left">
+            <div class="title-box">
+                <h1>Structure de données « Arbres » et complexité</h1>
+            </div>
+
+            <div class="subtitle">
+                <p><strong>Module :</strong> Algorithmique avancée et complexité</p>
+                <p><strong>Spécialité :</strong> M1 Bio-Informatique</p>
+            </div>
+
+            <div class="members">
+                <h3>Membres du groupe :</h3>
+                <div class="members-row">
+                    <span>SADI Silya</span>
+                    <span>ZOUKH Meriem</span>
+                </div>
+            </div>
+
+            <div class="desc">
+                <p>
+                    <strong>TreeLab</strong> est une application web interactive permettant de construire
+                    et manipuler des <strong>arbres n-aires</strong> à partir de mots (ajout, affichage,
+                    exploration, sous-arbres et transformation).
+                </p>
+            </div>
+        </div>
+
+        <div class="right">
+            <a class="btn" href="/menu">Entrer dans l’application</a>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

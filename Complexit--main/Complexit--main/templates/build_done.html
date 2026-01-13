@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TreeLab — Arbre final</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 30% 10%, rgba(56,189,248,0.18), transparent 55%),
+                  radial-gradient(900px 500px at 70% 40%, rgba(99,102,241,0.14), transparent 60%),
+                  linear-gradient(135deg,#020617,#0b1224);
+      color:white;
+      padding:28px;
+    }
+
+    .card{
+      max-width: 1100px;
+      margin: 0 auto;
+      background: rgba(2,6,23,0.78);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+
+    h2{
+      margin: 0 0 14px 0;
+      color:#38bdf8;
+      font-size: 34px;
+      letter-spacing: .3px;
+    }
+
+    .sub{
+      opacity:.85;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .svg-wrap{
+      margin-top: 10px;
+      overflow:auto;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.03);
+      padding: 18px;
+    }
+
+    .btns{
+      margin-top: 18px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      display:inline-block;
+      text-decoration:none;
+      background:#38bdf8;
+      color:black;
+      padding:14px 22px;
+      border-radius:999px;
+      font-weight:bold;
+      font-size: 18px;
+      transition:.2s;
+    }
+    .btn:hover{ background:white; transform: scale(1.02); }
+
+    /* ====== STYLE SVG (comme aperçu) ====== */
+    .edge{
+      stroke: rgba(255,255,255,0.25);
+      stroke-width: 3;
+      stroke-linecap: round;
+    }
+
+    .nodeCircle{
+      fill: rgba(10, 18, 35, 0.95);
+      stroke: rgba(56,189,248,0.85);
+      stroke-width: 2.5;
+      filter: drop-shadow(0 0 10px rgba(56,189,248,0.18));
+    }
+
+    .nodeText{
+      fill: white;
+      font-weight: 900;
+      font-size: 18px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+
+    .hintTag{
+      fill: rgba(255,255,255,0.75);
+      font-size: 12px;
+      text-anchor: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h2>Arbre final (nœuds & arcs)</h2>
+    <div class="sub">
+      Voici l’arbre complet, du père jusqu’aux dernières feuilles, avec des nœuds et des arcs (style aperçu).
+    </div>
+
+    <div class="svg-wrap">
+      <svg width="{{ w }}" height="{{ h }}" viewBox="0 0 {{ w }} {{ h }}" xmlns="http://www.w3.org/2000/svg">
+
+        <!-- Arcs -->
+        {% for e in edges %}
+          <line class="edge" x1="{{ e.x1 }}" y1="{{ e.y1+28 }}" x2="{{ e.x2 }}" y2="{{ e.y2-28 }}" />
+        {% endfor %}
+
+        <!-- Noeuds -->
+        {% for n in nodes %}
+          <circle class="nodeCircle" cx="{{ n.x }}" cy="{{ n.y }}" r="34" />
+          <text class="nodeText" x="{{ n.x }}" y="{{ n.y }}">{{ n.label }}</text>
+        {% endfor %}
+
+      </svg>
+    </div>
+
+    <div class="btns">
+      <a class="btn" href="/build">Construire un autre arbre</a>
+      <a class="btn" href="/menu">Aller au menu</a>
+    </div>
+  </div>
+</body>
+</html>
