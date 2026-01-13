@@ -1,0 +1,88 @@
+{
+  "Arbre": {
+    "value": "A",
+    "children": [
+      {
+        "value": "B",
+        "children": [
+          {
+            "value": "F",
+            "children": []
+          },
+          {
+            "value": "W",
+            "children": []
+          }
+        ]
+      },
+      {
+        "value": "C",
+        "children": [
+          {
+            "value": "T",
+            "children": [
+              {
+                "value": "D",
+                "children": [
+                  {
+                    "value": "R",
+                    "children": []
+                  },
+                  {
+                    "value": "U",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "value": "S",
+                "children": [
+                  {
+                    "value": "M",
+                    "children": []
+                  },
+                  {
+                    "value": "K",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "value": "N",
+            "children": [
+              {
+                "value": "L",
+                "children": [
+                  {
+                    "value": "Q",
+                    "children": []
+                  },
+                  {
+                    "value": "P",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "ACC": {
+    "value": "Z",
+    "children": [
+      {
+        "value": "W",
+        "children": [
+          {
+            "value": "R",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

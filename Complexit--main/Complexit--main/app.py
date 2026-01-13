@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 import tree
+import json
+import os
 
 app = Flask(__name__)
 
@@ -13,9 +15,11 @@ current_name = None
 current_n = 0
 current_used = set()
 
+DATA_FILE = "trees.json"
+
 
 # =========================
-# OUTILS ARBRE
+# OUTILS ARBRE (first_child / next_sibling)
 # =========================
 def get_children(node):
     children = []
@@ -34,10 +38,6 @@ def subtree_leaves_count(node):
 
 
 def layout_tree_svg(root, x_spacing=120, y_spacing=120, top_margin=60, left_margin=60):
-    """
-    Layout SAFE : utilise id(node) comme clé (évite erreurs unhashable).
-    Retour: nodes, edges, w, h
-    """
     if root is None:
         return [], [], 500, 300
 
@@ -98,6 +98,47 @@ def layout_tree_svg(root, x_spacing=120, y_spacing=120, top_margin=60, left_marg
 
 
 # =========================
+# PERSISTENCE (JSON)
+# =========================
+def node_to_dict(node):
+    return {
+        "value": node.value,
+        "children": [node_to_dict(ch) for ch in get_children(node)]
+    }
+
+
+def dict_to_node(data):
+    root = tree.Node(data["value"])
+    prev = None
+    for child_data in data.get("children", []):
+        child_node = dict_to_node(child_data)
+        if prev is None:
+            root.first_child = child_node
+        else:
+            prev.next_sibling = child_node
+        prev = child_node
+    return root
+
+
+def save_trees():
+    payload = {name: node_to_dict(root) for name, root in trees.items()}
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+
+
+def load_trees():
+    global trees
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            payload = json.load(f)
+        trees = {name: dict_to_node(data) for name, data in payload.items()}
+
+
+# Charger au démarrage
+load_trees()
+
+
+# =========================
 # ROUTES
 # =========================
 @app.route("/")
@@ -107,7 +148,8 @@ def home():
 
 @app.route("/menu")
 def menu():
-    return render_template("menu.html")
+    # envoie la liste des arbres enregistrés (optionnel)
+    return render_template("menu.html", names=sorted(trees.keys()))
 
 
 @app.route("/build", methods=["GET", "POST"])
@@ -118,7 +160,7 @@ def build():
 
     if request.method == "POST":
 
-        # 1) Démarrer un nouvel arbre
+        # Démarrage
         if "start" in request.form:
             current_name = request.form["name"].strip()
             current_n = int(request.form["n"])
@@ -128,7 +170,7 @@ def build():
             queue = [current_root]
             current_used = {root_val}
 
-        # 2) Ajouter les fils (BFS)
+        # Ajouter fils
         elif "k" in request.form and queue:
             node = queue.pop(0)
             k = int(request.form["k"])
@@ -147,18 +189,20 @@ def build():
                 queue.append(c)
                 current_used.add(val)
 
-    # ✅ FIN : afficher l'arbre complet en graphe
+    # FIN => enregistrer + afficher
     if not queue and current_root:
         trees[current_name] = current_root
+        save_trees()  # ✅ sauvegarde dans trees.json
+
         final_tree = current_root
 
-        # reset état de construction (l'arbre reste enregistré)
+        # reset construction
         current_root = None
         current_name = None
         current_n = 0
         current_used = set()
 
-        nodes, edges, w, h = layout_tree_svg(final_tree)
+        nodes, edges, w, h = layout_tree_svg(final_tree, x_spacing=140, y_spacing=140)
         return render_template("build_done.html", nodes=nodes, edges=edges, w=w, h=h)
 
     node = queue[0] if queue else None
@@ -168,15 +212,27 @@ def build():
 @app.route("/show_graph", methods=["GET", "POST"])
 def show_graph():
     if request.method == "POST":
-        name = request.form["name"]
+        name = request.form["name"].strip()
         t = trees.get(name)
+
         if not t:
             return "❌ Arbre non trouvé<br><a href='/menu'>Retour</a>"
 
-        nodes, edges, w, h = layout_tree_svg(t)
+        nodes, edges, w, h = layout_tree_svg(t, x_spacing=140, y_spacing=140)
         return render_template("show_graph.html", nodes=nodes, edges=edges, w=w, h=h, name=name)
 
-    return render_template("show_graph.html")
+    # GET : afficher la liste des arbres enregistrés
+    return render_template("select_tree.html", names=sorted(trees.keys()))
+
+
+@app.route("/delete_tree", methods=["POST"])
+def delete_tree():
+    """Optionnel: supprimer un arbre enregistré."""
+    name = request.form.get("name", "").strip()
+    if name in trees:
+        del trees[name]
+        save_trees()
+    return redirect("/menu")
 
 
 if __name__ == "__main__":
