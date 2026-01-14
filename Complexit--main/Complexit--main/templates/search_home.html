@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recherche</title>
+  <style>
+    body{margin:0;font-family:Arial;background:linear-gradient(135deg,#020617,#0f172a);color:white;padding:28px;}
+    .card{max-width:850px;margin:auto;background:rgba(2,6,23,.85);border:1px solid rgba(255,255,255,.1);
+      border-radius:20px;padding:22px;box-shadow:0 0 30px rgba(0,0,0,.45);}
+    h2{margin:0 0 14px 0;color:#38bdf8;font-size:28px;}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    .btn{
+      display:block;text-align:center;text-decoration:none;
+      padding:18px;border-radius:18px;font-weight:900;font-size:18px;
+      background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);
+      color:white;transition:.2s;
+    }
+    .btn:hover{transform:translateY(-4px) scale(1.02);border-color:rgba(56,189,248,.45);background:rgba(56,189,248,.12);}
+    .back{display:inline-block;margin-top:16px;text-decoration:none;color:#38bdf8;font-weight:900;}
+    @media (max-width: 850px){.grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🔍 Recherche</h2>
+
+    <div class="grid">
+      <a class="btn" href="/search_word">🔎 Rechercher un mot → Adresse</a>
+      <a class="btn" href="/search_path">🧭 Chemin d’un nœud a vers un nœud b</a>
+    </div>
+
+    <a class="back" href="/menu">← Retour au menu</a>
+  </div>
+</body>
+</html>

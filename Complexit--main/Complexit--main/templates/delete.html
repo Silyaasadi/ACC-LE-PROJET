@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supprimer un nœud</title>
+  <style>
+    body{margin:0;font-family:Arial;background:linear-gradient(135deg,#020617,#0f172a);color:white;padding:28px;}
+    .card{max-width:900px;margin:auto;background:rgba(2,6,23,.85);border:1px solid rgba(255,255,255,.1);
+      border-radius:20px;padding:22px;box-shadow:0 0 30px rgba(0,0,0,.45);}
+    h2{margin:0 0 12px 0;color:#38bdf8;}
+    label{display:block;margin:10px 0 6px;font-weight:900;}
+    select,input{width:100%;padding:12px;border-radius:12px;background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.14);color:white;outline:none;}
+    .btn{margin-top:12px;border:none;cursor:pointer;padding:12px 18px;border-radius:999px;background:#38bdf8;color:black;font-weight:900;}
+    .btn:hover{background:white;}
+    .msg{margin-top:12px;opacity:.95;}
+    .back{display:inline-block;margin-top:16px;text-decoration:none;color:#38bdf8;font-weight:900;}
+  </style>
+</head>
+<body>
+  <div class="card">
+    
+    <h2>🗑 Supprimer un nœud (a)</h2>
+
+    <form method="post" action="/delete">
+  <label for="tree_name">Choisir un arbre :</label>
+  <select id="tree_name" name="tree_name" required>
+    {% for n in names %}
+      <option value="{{ n }}" {% if selected_tree == n %}selected{% endif %}>{{ n }}</option>
+    {% endfor %}
+  </select>
+
+  <label for="value">Valeur du nœud à supprimer (a) :</label>
+  <input id="value" name="value" required>
+
+  <button class="btn" type="submit">Supprimer</button>
+</form>
+
+
+    {% if msg %}<div class="msg">{{ msg }}</div>{% endif %}
+
+    <a class="back" href="/menu">← Retour menu</a>
+  </div>
+</body>
+</html>
